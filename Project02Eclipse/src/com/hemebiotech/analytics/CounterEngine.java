@@ -1,10 +1,8 @@
 package com.hemebiotech.analytics;
 
-import java.util.HashMap;
-import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.stream.Collectors;
+import java.util.TreeMap;
 
 /**
  * This class handles the logic to count the symptoms from a list
@@ -17,6 +15,8 @@ import java.util.stream.Collectors;
  *
  */
 public class CounterEngine {
+	
+	private static final String EMPTY_SYMPTOM_LIST = "Empty symptom list given";
 
 	/**
 	 * This methods counts the symptoms and stores the results in a map
@@ -27,7 +27,7 @@ public class CounterEngine {
 	 */
 	public static Map<String, Integer> countSymptoms(List<String> symptoms){
 		//this map will store the symptoms and the number of apparitions
-		final Map<String, Integer> result = new HashMap<String, Integer>();
+		final Map<String, Integer> result = new TreeMap<String, Integer>();
 		
 		//if the list of symptoms is not empty, the we can process it
 		if(!symptoms.isEmpty()) {
@@ -43,16 +43,10 @@ public class CounterEngine {
 					result.put(s,1);
 				}
 			}
-			return sortMap(result);
+		}else {
+			result.put(EMPTY_SYMPTOM_LIST, -1);
 		}
-		return null;
+		return result;
 	}
-	
-	private static Map<String, Integer> sortMap(Map<String, Integer> unsortMap){
-		return unsortMap.entrySet().stream()
-				.sorted(Map.Entry.comparingByKey())
-				.collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue,(oldValue, newValue)->oldValue,LinkedHashMap::new));
-	}
-	
 	
 }
